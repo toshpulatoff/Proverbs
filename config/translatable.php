@@ -11,10 +11,10 @@ return [
     |
     */
     'locales' => [
-        'oz' => ['Lotin',],
-        'uz' => ['Cyrillic',],
-        'en' => ['English',],   
-        'ru' => ['Russian',],
+        'oz',
+        'uz',
+        'en',
+        'ru',
     ],
 
     /*
@@ -41,7 +41,7 @@ return [
     | and never fallback to the translator one.
     |
     */
-    'locale' => 'uz',
+    'locale' => 'oz',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return [
     | is used first. So "es" will be checked before "es_MX".
     |
     */
-    'fallback_locale' => 'uz',
+    'fallback_locale' => 'oz',
 
     /*
     |--------------------------------------------------------------------------

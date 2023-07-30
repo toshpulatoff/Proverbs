@@ -8,6 +8,8 @@ use App\Models\Proverb;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
+use function Ramsey\Uuid\v1;
+
 class ProverbController extends Controller
 {
     /**
@@ -43,12 +45,8 @@ class ProverbController extends Controller
      */
     public function store(StoreProverbRequest $request)
     {
-        $proverb = Proverb::create([
-            'content' => $request->input('content'),
-            'category_id' => $request->input('category_id'),
-            'tag_id' => $request->input('tag_id'),
-            'author_id' => auth()->id(),
-        ]);
+        $validated = $request->validated();
+        $proverb = Proverb::create($validated + ['author_id' => auth()->id()]);
 
         if ($request->has('categories')) {
             $proverb->categories()->attach($request->categories);
@@ -69,7 +67,9 @@ class ProverbController extends Controller
      */
     public function show(Proverb $proverb)
     {
-        //
+        return view('proverbs.show', [
+            'proverb' => $proverb,
+        ]);
     }
 
     /**
@@ -95,11 +95,26 @@ class ProverbController extends Controller
      */
     public function update(Request $request, Proverb $proverb)
     {
-        $proverb->update([
-            'content' => $request->input('content'),
-            'category_id' => $request->input('category_id'),
-            'tag_id' => $request->input('tag_id'),
-        ]);
+        $rules = [
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'categories' => 'array',
+            'categories.*' => 'exists:categories,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
+        ];
+    
+        $validatedData = $request->validate($rules);
+    
+        // Update the proverb with validated data
+        $proverb->update($validatedData);
+        //$proverb->update($request->all());
+        
+        //$proverb->categories()->sync($request['categories']);
+        //$proverb->tags()->sync($request['tags']);
+
+        $proverb->categories()->sync($request->input('categories', []));
+        $proverb->tags()->sync($request->input('tags', []));
 
         return redirect()->route('proverbs.index');
     }

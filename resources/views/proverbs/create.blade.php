@@ -21,30 +21,43 @@
                     
                     <form method="POST" action="{{ route('proverbs.store') }}">
                         @csrf
-                        Content:
+                        @foreach(config('translatable.locales') as $locale)
+                        <div class="mt-4">
+                            <label for="content_{{ $locale }}">Content ({{ strtoupper($locale) }})</label>
+                            <textarea name="{{ $locale }}[content]" id="content_{{ $locale }}" rows="5"
+                                      class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ old($locale . '.content') }}</textarea>
+                        </div>
+                        @endforeach
                         <br />
-                        <textarea name="content" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
-                        <br /><br />
-                        Category:
-                        <select name="categories[]" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        Category
+                        <select name="categories[]" class="form-select">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
-                        <br /><br />
-                        <div class="mb-6">
-                            <label class="block">
-                                <span class="text-gray-700">Tag</span>
-                                <select name="tags[]" class="block w-full mt-1" multiple>
-                                    @foreach ($tags as $tag)
-                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                    @endforeach
-                                </select>
-                            </label>
+                        <br />
+                        <div class="form-group mb-3">
+                            <label for="select2Multiple">Tags</label>
+                            <select class="select2-multiple form-control" name="tags[]" multiple="multiple"
+                              id="select2Multiple">
+                                @foreach ($tags as $tag)
+                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                @endforeach              
+                            </select>
                         </div>
-                        <br /><br />
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">Save</button>
                     </form>
+                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+                     
+                    <script>
+                        $(document).ready(function() {
+                            // Select2 Multiple
+                            $('.select2-multiple').select2({
+                                placeholder: "Select",
+                                allowClear: true
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>

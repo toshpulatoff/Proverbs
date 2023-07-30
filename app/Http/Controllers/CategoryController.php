@@ -61,7 +61,8 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $category->update([
-            'name' => $request->input('name')
+            'name' => $request->input('name'),
+            'description' => $request->input('description')
         ]);
 
         return redirect()->route('categories.index');

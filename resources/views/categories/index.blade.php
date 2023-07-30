@@ -11,11 +11,12 @@
                 <div class="p-6 text-gray-900">
                     <a href="{{ route('categories.create') }}">Add new category</a>
                     <br /><br />
-                    <table>
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
