@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        return view('categories.index', compact( var_name: 'categories'));
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -23,7 +23,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        $categories = Category::all();
+        return view('categories.create', compact('categories'));
     }
 
     /**
@@ -31,9 +32,20 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'parent_id' => 'nullable|exists:categories,id',
+        ]);
+    
+        // Set parent_id to 0 for top-level categories
+        $parent_id = $validatedData['parent_id'] ?? 0;
+    
+        // Create the category using validated data and adjusted parent_id
         Category::create([
-            'name' => $request->input( key: 'name'),
-            'description' => $request->input( key: 'description'),
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'parent_id' => $parent_id,
         ]);
 
         return redirect()->route('categories.index');
@@ -50,19 +62,35 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        return view('categories.edit', compact( var_name: 'category'));
+        $category = Category::findOrFail($id);
+        $parentCategories = Category::where('id', '<>', $id)->get(); // Exclude the current category from parent options
+
+        return view('categories.edit', compact('category', 'parentCategories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
+        $category = Category::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'parent_id' => 'nullable|exists:categories,id',
+        ]);
+
+        // Set parent_id to 0 for top-level categories
+        $parent_id = $validatedData['parent_id'] ?? 0;
+
+        // Update the category using validated data and adjusted parent_id
         $category->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description')
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'parent_id' => $parent_id,
         ]);
 
         return redirect()->route('categories.index');

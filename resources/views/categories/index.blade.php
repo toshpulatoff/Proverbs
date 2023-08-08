@@ -16,6 +16,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>Parent Category</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -24,6 +25,13 @@
                             <tr>
                                 <td>{{ $category->name }}</td>
                                 <td>{{ $category->description }}</td>
+                                <td>
+                                    @if ($category->parentCategory)
+                                        {{ $category->parentCategory->name }}
+                                    @else
+                                        None
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="{{ route('categories.edit', $category) }}">Edit</a>
                                     <form method="POST" action="{{ route('categories.destroy', $category) }}">
