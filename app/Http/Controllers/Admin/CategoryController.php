@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        return view('categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -24,7 +25,7 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('categories.create', compact('categories'));
+        return view('admin.categories.create', compact('categories'));
     }
 
     /**
@@ -48,7 +49,7 @@ class CategoryController extends Controller
             'parent_id' => $parent_id,
         ]);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -67,7 +68,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $parentCategories = Category::where('id', '<>', $id)->get(); // Exclude the current category from parent options
 
-        return view('categories.edit', compact('category', 'parentCategories'));
+        return view('admin.categories.edit', compact('category', 'parentCategories'));
     }
 
     /**
@@ -93,7 +94,7 @@ class CategoryController extends Controller
             'parent_id' => $parent_id,
         ]);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -103,6 +104,6 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('admin.categories.index');
     }
 }

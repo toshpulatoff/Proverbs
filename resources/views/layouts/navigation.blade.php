@@ -16,11 +16,11 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <a class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                    href="{{ route('proverbs.index') }}">Proverbs</a>
+                    href="{{ route('admin.proverbs.index') }}">Proverbs</a>
                     <a class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                    href="{{ route('categories.index') }}">Categories</a>
+                    href="{{ route('admin.categories.index') }}">Categories</a>
                     <a class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                    href="{{ route('tags.index') }}">Tags</a>
+                    href="{{ route('admin.tags.index') }}">Tags</a>
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('admin.profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
@@ -86,7 +86,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route('admin.profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 

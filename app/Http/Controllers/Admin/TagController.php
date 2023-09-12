@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StoreTagRequest;
+use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class TagController extends Controller
     {
         $tags = Tag::all();
 
-        return view( 'tags.index', compact( var_name: 'tags'));
+        return view('admin.tags.index', compact( var_name: 'tags'));
     }
 
     /**
@@ -23,7 +24,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view( 'tags.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -35,7 +36,7 @@ class TagController extends Controller
             'name' => $request->input( key: 'name')
         ]);
 
-        return redirect()->route('tags.index');
+        return redirect()->route('admin.tags.index');
     }
 
     /**
@@ -51,7 +52,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        return view( 'tags.edit', compact( var_name: 'tag'));
+        return view('admin.tags.edit', compact( var_name: 'tag'));
     }
 
     /**
@@ -63,7 +64,7 @@ class TagController extends Controller
             'name' => $request->input('name')
         ]);
 
-        return redirect()->route('tags.index');
+        return redirect()->route('admin.tags.index');
     }
 
     /**
@@ -73,6 +74,6 @@ class TagController extends Controller
     {
         $tag->delete();
 
-        return redirect()->route('tags.index');
+        return redirect()->route('admin.tags.index');
     }
 }

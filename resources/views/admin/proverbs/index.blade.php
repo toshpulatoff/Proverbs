@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <a href="{{ route('proverbs.create') }}" class="link-primary">Add new proverb</a>
+                    <a href="{{ route('admin.proverbs.create') }}" class="link-primary">Add new proverb</a>
                     <br /><br />
                     <table class="table">
                         <thead>
@@ -29,8 +29,8 @@
                                 <td>{{ implode(', ', $proverb->categories->pluck('name')->toArray()) }}</td>
                                 <td>{{ implode(', ', $proverb->tags->pluck('name')->toArray()) }}</td>
                                 <td>
-                                    <a href="{{ route('proverbs.edit', $proverb) }} " class="link-primary">Edit</a>
-                                    <form method="POST" action="{{ route('proverbs.destroy', $proverb) }}" class="link-danger">
+                                    <a href="{{ route('admin.proverbs.edit', $proverb) }} " class="link-primary">Edit</a>
+                                    <form method="POST" action="{{ route('admin.proverbs.destroy', $proverb) }}" class="link-danger">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" onclick="return confirm('Are you sure?')" >Delete</button>

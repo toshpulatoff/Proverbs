@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StoreProverbRequest;
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Proverb;
 use App\Models\Tag;
@@ -21,7 +22,7 @@ class ProverbController extends Controller
     {
         $proverbs = Proverb::with('categories', 'tags')->get();
 
-        return view('proverbs.index', compact('proverbs'));
+        return view('admin.proverbs.index', compact('proverbs'));
     }
 
     /**
@@ -34,7 +35,7 @@ class ProverbController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
 
-        return view('proverbs.create', compact('categories', 'tags'));
+        return view('admin.proverbs.create', compact('categories', 'tags'));
     }
 
     /**
@@ -56,7 +57,7 @@ class ProverbController extends Controller
             $proverb->tags()->attach($request->tags);
         }
 
-        return redirect()->route('proverbs.index');
+        return redirect()->route('admin.proverbs.index');
     }
 
     /**
@@ -67,7 +68,7 @@ class ProverbController extends Controller
      */
     public function show(Proverb $proverb)
     {
-        return view('proverbs.show', [
+        return view('admin.proverbs.show', [
             'proverb' => $proverb,
         ]);
     }
@@ -83,7 +84,7 @@ class ProverbController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
 
-        return view('proverbs.edit', compact('proverb', 'categories', 'tags'));
+        return view('admin.proverbs.edit', compact('proverb', 'categories', 'tags'));
     }
 
     /**
@@ -116,7 +117,7 @@ class ProverbController extends Controller
         $proverb->categories()->sync($request->input('categories', []));
         $proverb->tags()->sync($request->input('tags', []));
 
-        return redirect()->route('proverbs.index');
+        return redirect()->route('admin.proverbs.index');
     }
 
     /**
@@ -129,6 +130,6 @@ class ProverbController extends Controller
     {
         $proverb->delete();
 
-        return redirect()->route('proverbs.index');
+        return redirect()->route('admin.proverbs.index');
     }
 }
