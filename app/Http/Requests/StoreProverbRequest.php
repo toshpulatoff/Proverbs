@@ -19,10 +19,16 @@ class StoreProverbRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules(): array
+    public function rules()
     {
-        return [
-            'content' => 'required',
+        $rules = [
+            'oz.content' => 'required',
         ];
+
+        foreach (config('translatable.locales') as $locale) {
+            $rules[$locale . '.content'] = 'string';
+        }
+
+        return $rules;
     }
 }

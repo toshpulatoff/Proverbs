@@ -12,7 +12,6 @@ class ProverbTranslation extends Model
     //use Sluggable;
 
     protected $fillable = ['slug', 'proverb_id', 'content'];
-    public $timestamps = false;
 
     // public function sluggable()
     // {
