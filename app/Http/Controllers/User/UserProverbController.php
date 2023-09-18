@@ -41,7 +41,17 @@ class UserProverbController extends Controller
         $categories = Category::all();
         $proverb = Proverb::findOrFail($id);
 
-        return view('user.proverbs.show', compact('proverb', 'categories'));
+        $proverbTags = $proverb->tags()->pluck('id')->toArray();
+
+        $similarProverbs = Proverb::whereHas('tags', function ($query) use ($proverbTags) {
+            $query->whereIn('id', $proverbTags);
+        })
+            ->where('id', '!=', $id)
+            ->inRandomOrder()
+            ->take(2)
+            ->get();
+
+        return view('user.proverbs.show', compact('proverb', 'categories', 'similarProverbs'));
     }
 
     public function proverbsByCategory($id)
@@ -65,14 +75,16 @@ class UserProverbController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $term = $request->input('query');
         $categories = Category::all();
 
         // Perform a search on the Proverb model using the 'content' attribute.
-        $proverbs = Proverb::translated()
-            ->where('content', 'like', '%' . $query . '%')
-            ->paginate(2);
+        $proverbs = Proverb::whereHas('proverb_translations', function ($query) use ($term) {
+            $query->where('content', 'like', '%' . $term . '%');
+        })
+            ->paginate();
+        // ->where('proverb_translations.content', 'like', '%' . $query . '%');
 
-        return view('user.proverbs.search', compact('proverbs', 'categories'));
+        return view('user.proverbs.index', compact('proverbs', 'categories'));
     }
 }

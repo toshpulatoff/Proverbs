@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             //$table->string('image_url', 1000);
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

@@ -22,10 +22,10 @@ use App\Http\Controllers\User\UserProverbController;
 //     return view('user.proverbs.index');
 // });
 Route::get('/', [UserProverbController::class, 'index'])->name('user.proverb.index');
+Route::get('/proverbs/search', [UserProverbController::class, 'search'])->name('user.proverbs.index');
 Route::get('/proverbs/{id}', [UserProverbController::class, 'show'])->name('user.proverbs.show');
 Route::get('/proverbs/by-category/{id}', [UserProverbController::class, 'proverbsByCategory'])->name('user.proverbs.by_category');
 //Route::get('/proverbs/search', [UserProverbController::class, 'search'])->name('user.proverbs.search');
-Route::get('/proverbs/search', [UserProverbController::class, 'search'])->name('user.proverbs.search');
 
 
 Route::get('/dashboard', function () {
@@ -33,7 +33,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => 'administrator',
     'as' => 'admin.',
     'middleware' => ['auth', 'isAdmin']
 ], function () {

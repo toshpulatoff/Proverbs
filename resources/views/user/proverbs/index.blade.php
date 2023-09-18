@@ -499,7 +499,7 @@
         <div class="row my-3 my-lg-5 align-items-center no-gutters">
             <div class="col-6 col-lg-4">
                 <h1 class="m-0 font-weight-normal">
-                    <a href="https://maqollar.uz/" title="Maqollar.uz — Proverbs · Maqollar · Пословицы"
+                    <a href="{{ route('user.proverb.index') }}" title="Maqollar.uz — Proverbs · Maqollar · Пословицы"
                         class="logo d-inline-block">
                         <img class="img-fluid"
                             src="https://maqollar.uz/wp-content/themes/maqollar/assets/images/logo.svg"
@@ -521,10 +521,10 @@
             <div class="col-12 col-lg-4 mt-3 mt-lg-0 d-none d-lg-block">
                 <div class>
                     <form role="search" method="GET" class="search-form"
-                        action="{{ route('user.proverbs.search') }}">
+                        action="{{ route('user.proverbs.index') }}">
                         <div class="input-group">
-                            <input data-swplive="true" type="search" id="search-form-64f9c256cd74e"
-                                class="form-control" placeholder="Қидириш..." value name="s" />
+                            <input data-swplive="true" type="search"
+                                class="form-control" placeholder="Қидириш..." name="query" />
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-secondary">
                                     <i class="fa fa-search"></i>
@@ -545,10 +545,10 @@
         <div class="row">
             <div class="col-12 col-lg">
                 <div class="row">
-                    <form action="{{ route('user.proverbs.search', request()->query()) }}" method="GET">
+                    {{-- <form action="{{ route('user.proverbs.search') }}" method="GET">
                         <input type="text" name="query" placeholder="Search proverbs...">
                         <button type="submit">Search</button>
-                    </form>
+                    </form> --}}
                     
                     <div class="container">
                         <div class="row">

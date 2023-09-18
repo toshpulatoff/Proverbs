@@ -520,10 +520,11 @@
             </div>
             <div class="col-12 col-lg-4 mt-3 mt-lg-0 d-none d-lg-block">
                 <div class>
-                    <form role="search" method="get" class="search-form" action="https://maqollar.uz/">
+                    <form role="search" method="GET" class="search-form"
+                        action="{{ route('user.proverbs.index') }}">
                         <div class="input-group">
-                            <input data-swplive="true" type="search" id="search-form-64f9c256cd74e"
-                                class="form-control" placeholder="Қидириш..." value name="s" />
+                            <input data-swplive="true" type="search"
+                                class="form-control" placeholder="Қидириш..." name="query" />
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-secondary">
                                     <i class="fa fa-search"></i>
@@ -567,69 +568,33 @@
                             </div>
                         </article>
                     </div>
+                </div>
 
-                    {{-- @foreach ($proverbs as $proverb)
-                        <div class="col-12 col-lg-12 mb-4">
-                            <article id="post-179"
-                                class="card card-proverb border-0 shadow-sm h-100 post-179 post type-post status-publish format-standard has-post-thumbnail hentry category-baxt-va-baxtsizlik-haqida category-mehr-oqibat-va-oqibatsizlik-haqida category-oila-haqida category-er-xotinlar-haqida category-qadr-qimmat-va-qadrsizlik-haqida">
-                                <a href="https://maqollar.uz/cards/179"
-                                    class="card-body text-center d-flex align-items-center justify-content-center py-5 px-4 text-dark">
-                                    <div class>
-                                        <div class="frame-outer align-items-center">
-                                            <div>
-                                                <h2 class="text-xl">{{ $proverb->translate('oz')->content }}</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div class="p-2 border-top">
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col-6">
-                                            <a href="https://telegram.me/share/url?url=https://maqollar.uz/cards/179"
-                                                class="btn btn-sm text-white bg-telegram" target="_blank"> <i
-                                                    class="fab fa-telegram"></i> <span
-                                                    class="d-none d-lg-inline">Telegram</span></a>
-                                        </div>
-                                        <div class="col-6 text-right">
-                                            <div class>
-                                                <a href="https://maqollar.uz/wp-content/uploads/2016/01/cards483.jpg?utm_source=download_btn"
-                                                    download="	https://maqollar.uz/wp-content/uploads/2016/01/cards483.jpg"
-                                                    class="btn btn-secondary btn-sm d-none"><i
-                                                        class="far fa-arrow-alt-circle-down"></i> Кўчириш</a>
-                                                <a href="https://maqollar.uz/cards/179"
-                                                    class="btn btn-outline-secondary btn-sm d-none"><i
-                                                        class="fa fa-link"></i></a>
-                                                <button class="btn btn-outline-secondary btn-sm"
-                                                    data-clipboard-action="copy" data-clipboard-target="#bar-179">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
-                                                <textarea id="bar-179" class rows="5" style="width: 0; height: 0; position: absolute; left: -99999px;">A good wife makes a good husband.&#10240;&#10;&mdash;&#10240;&#10;Эрни эр қиладиган ҳам хотин, Қора ер қиладиган ҳам хотин.&#10240;&#10;&mdash;&#10240;&#10;Erni er qiladigan ham xotin, Qora yer qiladigan ham xotin.&#10240;&#10;&mdash;&#10240;&#10;Доброю женою и муж честен.&#10240;&#10;&#10240;&#10;www.maqollar.uz&#10240;&#10;&#10240;&#10;#proverbs #пословицы #maqollar #toshkent #tashkent #maqollar_uz #uz #uzbek #uzbekistan</textarea>
+                <div class="row">
+                    @foreach ($similarProverbs as $similarProverb)
+                        <div class="col-12 col-lg-6 mb-4">
+                            <article class="card card-proverb border-0 shadow-sm post-{{ $similarProverb->id }} post type-post status-publish format-standard hentry">
+                                <div class="card-body text-center d-flex align-items-center justify-content-center py-5 px-4">
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-8">
+                                                <h2 class="text-xl">
+                                                    @foreach ($similarProverb->translations as $translation)
+                                                        {{ $translation->content }}
+                                                        @if (!$loop->last)
+                                                            <span class="decor d-block">—</span>
+                                                        @endif
+                                                    @endforeach
+                                                </h2>
+                                                <!-- Display other proverb details as needed -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </article>
                         </div>
-                    @endforeach --}}
+                    @endforeach
                 </div>
-                {{-- <div class="text-center mb-3 mb-lg-5">
-                    <div class="d-inline-block">
-                        @if ($proverbs->previousPageUrl())
-                            <a href="{{ $proverbs->previousPageUrl() }}" class="btn btn-outline-secondary px-5 mx-2">
-                                <i class="fa fa-angle-left"></i>
-                            </a>
-                        @endif
-                    </div>
-                    <div class="d-inline-block"></div>
-                    <div class="d-inline-block">
-                        @if ($proverbs->hasMorePages())
-                            <a href="{{ $proverbs->nextPageUrl() }}" class="btn btn-outline-secondary px-5 mx-2">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        @endif
-                    </div>
-                </div> --}}
-
 
             </div>
             <div class="col-12 col-lg-3">
@@ -638,7 +603,7 @@
                     <ul class="nav flex-column">
                         <li class="nav-item border-bottom cat-item-68 i-have-kids">
                             <a class="nav-link text-dark px-0 d-flex justify-content-between"
-                                href="https://maqollar.uz/cards/category/adolat-tenglik">{{ $category->name }}
+                                href="{{ route('user.proverbs.by_category', $category) }}">{{ $category->name }}
                                 <span class="text-muted">{{ $category->proverbs->count() }}</span>
                             </a>
                         </li>
