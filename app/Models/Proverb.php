@@ -12,8 +12,8 @@ class Proverb extends Model implements TranslatableContract
 {
     use HasFactory, Translatable;
 
-    public $translatedAttributes = ['content', 'slug'];
-    protected $fillable = ['content', 'slug', 'image_url', 'author_id', 'status'];
+    public $translatedAttributes = ['content'];
+    protected $fillable = ['slug', 'image_url', 'author_id', 'status', 'meta_title', 'meta_description', 'meta_keywords', 'canonical_url'];
 
     public function categories()
     {

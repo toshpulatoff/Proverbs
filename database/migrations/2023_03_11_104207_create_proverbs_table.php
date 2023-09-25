@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('proverbs', function (Blueprint $table) {
             $table->id();
+            $table->string('slug')->unique();
             //$table->string('image_url', 1000);
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->tinyInteger('status')->default(1);
+            $table->string('meta_title', 255)->nullable();
+            $table->text('meta_description', 255)->nullable();
+            $table->text('meta_keywords', 255)->nullable();
+            $table->string('canonical_url')->nullable();
             $table->timestamps();
         });
     }

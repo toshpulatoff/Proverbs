@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('proverb_translations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proverb_id')->constrained()->onDelete('cascade');
-            //$table->string('slug')->unique();
             $table->text('content');
             $table->string('locale', 10)->index();
             $table->timestamps();

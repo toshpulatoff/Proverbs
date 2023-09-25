@@ -15,9 +15,7 @@ return [
     */
 
     'resources' => [
-        \App\Filament\Resources\ProverbResource::class,
-        \App\Filament\Resources\RoleResource::class,
-        // Добавьте здесь другие ресурсы, если они есть.
+        //
     ],
 
     'broadcasting' => [

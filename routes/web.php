@@ -24,9 +24,7 @@ use App\Http\Controllers\User\UserProverbController;
 Route::get('/', [UserProverbController::class, 'index'])->name('user.proverb.index');
 Route::get('/proverbs/search', [UserProverbController::class, 'search'])->name('user.proverbs.index');
 Route::get('/proverbs/{id}', [UserProverbController::class, 'show'])->name('user.proverbs.show');
-Route::get('/proverbs/by-category/{id}', [UserProverbController::class, 'proverbsByCategory'])->name('user.proverbs.by_category');
-//Route::get('/proverbs/search', [UserProverbController::class, 'search'])->name('user.proverbs.search');
-
+Route::get('/proverbs/{by_category:slug}', [UserProverbController::class, 'proverbsByCategory'])->name('user.proverbs.by_category');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -53,12 +51,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('tags', TagController::class);
 });
-
-// Route::group([
-//     'as' => 'user.',
-// ], function () {
-//     Route::get('/proverbs', [UserProverbController::class, 'index'])->name('proverbs.index');
-//     Route::get('/proverbs/{proverb}', [UserProverbController::class, 'show'])->name('proverbs.show');
-// });
 
 require __DIR__.'/auth.php';

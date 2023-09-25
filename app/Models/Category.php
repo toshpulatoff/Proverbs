@@ -4,25 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\Modelable;
 
-use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
-use Astrotomic\Translatable\Translatable;
-
-class Category extends Model implements TranslatableContract
+class Category extends Model
 {
-    use HasFactory, Translatable;
+    use HasFactory;
 
-    public $translatedAttributes = ['name', 'description'];
-    protected $fillable = ['slug', 'parent_id'];
+    protected $fillable = ['slug', 'title', 'description', 'parent_id', 'meta_title', 'meta_description', 'meta_keywords', 'canonical_url'];
 
     public function proverbs()
     {
         return $this->belongsToMany(Proverb::class);
-    }
-
-    public function category_translations()
-    {
-        return $this->hasMany(CategoryTranslation::class);
     }
 
     public function parentCategory()

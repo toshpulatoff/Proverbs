@@ -499,7 +499,7 @@
         <div class="row my-3 my-lg-5 align-items-center no-gutters">
             <div class="col-6 col-lg-4">
                 <h1 class="m-0 font-weight-normal">
-                    <a href="https://maqollar.uz/" title="Maqollar.uz — Proverbs · Maqollar · Пословицы"
+                    <a href="{{ route('user.proverb.index') }}" title="Maqollar.uz — Proverbs · Maqollar · Пословицы"
                         class="logo d-inline-block">
                         <img class="img-fluid"
                             src="https://maqollar.uz/wp-content/themes/maqollar/assets/images/logo.svg"
