@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
+use App\Models\Proverb;
+use App\Models\ProverbTranslation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,6 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\TextEntry;
 
 class CategoryResource extends Resource
 {
@@ -22,6 +27,11 @@ class CategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Content';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Form $form): Form
     {
@@ -36,13 +46,12 @@ class CategoryResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent Category')
                     ->relationship('parentCategory', 'title')
-                    ->options(Category::all()->pluck('title', 'id'))
+                    ->options(Category::orderBy('title', 'asc')->pluck('title', 'id'))
                     ->nullable(),
                 Forms\Components\TextInput::make('meta_title')
                     ->maxLength(255),
@@ -71,6 +80,7 @@ class CategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('parentCategory.title')
                     ->label('Parent Category')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -85,6 +95,7 @@ class CategoryResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -95,6 +106,20 @@ class CategoryResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
+            ])
+            ->defaultPaginationPageOption(50);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                RepeatableEntry::make('proverbs')
+                    ->schema([
+                        TextEntry::make('id'),
+                        TextEntry::make('content')
+                            ->listWithLineBreaks()
+                    ])
             ]);
     }
 

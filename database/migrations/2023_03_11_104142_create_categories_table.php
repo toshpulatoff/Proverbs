@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique();
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->bigInteger('parent_id')->nullable();
             $table->string('meta_title', 255)->nullable();
             $table->text('meta_description', 255)->nullable();

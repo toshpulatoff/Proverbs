@@ -10,6 +10,7 @@
         "cviebrock/eloquent-sluggable": "^10.0",
         "filament/filament": "^3.0-stable",
         "filament/forms": "^3.0-stable",
+        "filament/infolists": "^3.0-stable",
         "filament/tables": "^3.0-stable",
         "guzzlehttp/guzzle": "^7.2",
         "guzzlehttp/psr7": "^2.5",

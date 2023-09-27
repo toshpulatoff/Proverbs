@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProverbResource\Pages;
 use App\Filament\Resources\ProverbResource\RelationManagers;
 use App\Models\Proverb;
+use App\Models\ProverbTranslation;
 use App\Models\Category;
 use App\Models\Tag;
 use Filament\Forms;
@@ -29,40 +30,47 @@ class ProverbResource extends Resource
 
     protected static ?string $navigationGroup = 'Content';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
-
         $formComponents = [];
 
-        $formComponents[] = Forms\Components\TextArea::make('oz.content')
-            ->label('Content (oz)')
-            ->required()
-            ->live(debounce: '1000')
-            ->afterStateUpdated(function (Set $set, ?string $state) {
-                $slug = Str::slug($state);
-                $set('slug', $slug);
-            });
+        // $formComponents[] = Forms\Components\TextArea::make('oz.content')
+        //     ->label('Content (oz)')
+        //     ->required()
+        //     ->live(debounce: '1000')
+        //     ->afterStateUpdated(function (Set $set, ?string $state) {
+        //         $slug = Str::slug($state);
+        //         $set('slug', $slug);
+        //     });
 
+        // foreach (config('translatable.locales') as $locale) {
+        //     if ($locale !== 'oz') {
+        //         $formComponents[] = Forms\Components\TextArea::make("{$locale}.content")
+        //             ->label("Content ({$locale})")
+        //             ->required();
+        //     }
+        // }
 
         foreach (config('translatable.locales') as $locale) {
-            if ($locale !== 'oz') {
-                $formComponents[] = Forms\Components\TextArea::make("{$locale}.content")
-                    ->label("Content ({$locale})")
-                    ->required();
-            }
+            $formComponents[] = Forms\Components\TextArea::make("{$locale}.content")
+                ->label("Content ({$locale})")
+                ->required();
         }
-
-        $formComponents[] = Forms\Components\TextInput::make('slug');
 
         $formComponents[] = Forms\Components\Select::make('categories')
             ->multiple()
             ->relationship('categories', 'title')
-            ->options(Category::all()->pluck('title', 'id'));
+            ->options(Category::orderBy('title', 'asc')->pluck('title', 'id'));
 
         $formComponents[] = Forms\Components\Select::make('tags')
             ->multiple()
             ->relationship('tags', 'title')
-            ->options(Tag::all()->pluck('title', 'id'));
+            ->options(Tag::orderBy('title', 'asc')->pluck('title', 'id'));
 
         $formComponents[] = Forms\Components\Toggle::make('status')
             ->required();
@@ -78,6 +86,7 @@ class ProverbResource extends Resource
         $formComponents[] = Forms\Components\TextInput::make('canonical_url')
             ->maxLength(255)
             ->columnSpanFull();
+        $formComponents[] = Forms\Components\TextInput::make('slug');
 
         return $form->schema($formComponents);
     }
@@ -93,12 +102,22 @@ class ProverbResource extends Resource
                     ->bulleted()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('categories.title')
+                    ->sortable(query: function (Builder $query, string $direction, $column): Builder {
+                        [$table, $field] = explode('.', $column->getName());
+
+                        return $query->withAggregate($table, $field)
+                            ->orderBy(implode('_', [$table, $field]), $direction);
+                    })
                     ->listWithLineBreaks()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tags.title')
+                    ->sortable(query: function (Builder $query, string $direction, $column): Builder {
+                        [$table, $field] = explode('.', $column->getName());
+
+                        return $query->withAggregate($table, $field)
+                            ->orderBy(implode('_', [$table, $field]), $direction);
+                    })
                     ->listWithLineBreaks()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable()
@@ -129,7 +148,8 @@ class ProverbResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ]);
+            ])
+            ->defaultPaginationPageOption(50);
     }
 
     public static function getRelations(): array

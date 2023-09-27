@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('proverbs', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             //$table->string('image_url', 1000);
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->tinyInteger('status')->default(1);

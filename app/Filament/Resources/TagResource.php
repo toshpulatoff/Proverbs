@@ -23,6 +23,11 @@ class TagResource extends Resource
 
     protected static ?string $navigationGroup = 'Content';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -82,7 +87,8 @@ class TagResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ]);
+            ])
+            ->defaultPaginationPageOption(50);
     }
 
     public static function getPages(): array
