@@ -116,10 +116,15 @@ class CategoryResource extends Resource
             ->schema([
                 RepeatableEntry::make('proverbs')
                     ->schema([
-                        TextEntry::make('id'),
-                        TextEntry::make('content')
-                            ->listWithLineBreaks()
+                            TextEntry::make('id'),
+                        RepeatableEntry::make('translations')
+                            ->schema([
+                                TextEntry::make('content')
+                            ])
+                            ->grid(4)
+                            ->contained(false)
                     ])
+                    ->columnSpanFull()
             ]);
     }
 
