@@ -523,8 +523,8 @@
                     <form role="search" method="GET" class="search-form"
                         action="{{ route('user.proverbs.index') }}">
                         <div class="input-group">
-                            <input data-swplive="true" type="search"
-                                class="form-control" placeholder="Қидириш..." name="query" />
+                            <input data-swplive="true" type="search" class="form-control" placeholder="Қидириш..."
+                                name="query" />
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-secondary">
                                     <i class="fa fa-search"></i>
@@ -566,6 +566,23 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="p-2 border-top">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col-6">
+                                        <a href="https://telegram.me/share/url?url={{ route('user.proverbs.show', $proverb->id) }}"
+                                            class="btn btn-sm text-white bg-telegram" target="_blank">
+                                            <i class="fab fa-telegram"></i> <span
+                                                class="d-none d-lg-inline">Telegram</span>
+                                        </a>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <button class="btn btn-outline-secondary btn-sm copy-proverb"
+                                            data-clipboard-text="{{ $proverb->translations->pluck('content')->implode(' — ') }}">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </article>
                     </div>
                 </div>
@@ -573,8 +590,10 @@
                 <div class="row">
                     @foreach ($similarProverbs as $similarProverb)
                         <div class="col-12 col-lg-6 mb-4">
-                            <article class="card card-proverb border-0 shadow-sm post-{{ $similarProverb->id }} post type-post status-publish format-standard hentry">
-                                <div class="card-body text-center d-flex align-items-center justify-content-center py-5 px-4">
+                            <article
+                                class="card card-proverb border-0 shadow-sm post-{{ $similarProverb->id }} post type-post status-publish format-standard hentry">
+                                <div
+                                    class="card-body text-center d-flex align-items-center justify-content-center py-5 px-4">
                                     <div class="container">
                                         <div class="row justify-content-center">
                                             <div class="col-md-8">
@@ -588,6 +607,23 @@
                                                 </h2>
                                                 <!-- Display other proverb details as needed -->
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-2 border-top">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col-6">
+                                            <a href="https://telegram.me/share/url?url={{ route('user.proverbs.show', $proverb->id) }}"
+                                                class="btn btn-sm text-white bg-telegram" target="_blank">
+                                                <i class="fab fa-telegram"></i> <span
+                                                    class="d-none d-lg-inline">Telegram</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button class="btn btn-outline-secondary btn-sm copy-proverb"
+                                                data-clipboard-text="{{ $proverb->translations->pluck('content')->implode(' — ') }}">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

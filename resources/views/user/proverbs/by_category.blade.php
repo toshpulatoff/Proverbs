@@ -566,6 +566,23 @@
                                         </div>
                                     </div>
                                 </a>
+                                <div class="p-2 border-top">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col-6">
+                                            <a href="https://telegram.me/share/url?url={{ route('user.proverbs.show', $proverb->id) }}"
+                                                class="btn btn-sm text-white bg-telegram" target="_blank">
+                                                <i class="fab fa-telegram"></i> <span
+                                                    class="d-none d-lg-inline">Telegram</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button class="btn btn-outline-secondary btn-sm copy-proverb"
+                                                data-clipboard-text="{{ $proverb->translations->pluck('content')->implode(' — ') }}">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </article>
                         </div>
                     @endforeach

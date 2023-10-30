@@ -549,7 +549,6 @@
                         <input type="text" name="query" placeholder="Search proverbs...">
                         <button type="submit">Search</button>
                     </form> --}}
-
                     <div class="container">
                         @if (isset($resultCount) && $resultCount > 0)
                             <p>{{ $resultCount }} results found for "{{ $query }}"</p>
