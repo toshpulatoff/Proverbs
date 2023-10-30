@@ -603,7 +603,7 @@
                     <ul class="nav flex-column">
                         <li class="nav-item border-bottom cat-item-68 i-have-kids">
                             <a class="nav-link text-dark px-0 d-flex justify-content-between"
-                                href="{{ route('user.proverbs.by_category', $category) }}">{{ $category->name }}
+                                href="{{ route('user.proverbs.by_category', $category) }}">{{ $category->title }}
                                 <span class="text-muted">{{ $category->proverbs->count() }}</span>
                             </a>
                         </li>

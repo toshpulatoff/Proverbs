@@ -25,7 +25,7 @@ class UserProverbController extends Controller
         //     ->get();
 
         $categories = Category::all();
-        $proverbs = Proverb::translated()->paginate(2);
+        $proverbs = Proverb::translated()->paginate(4);
 
         return view('user.proverbs.index', compact('proverbs', 'categories'));
     }
@@ -54,16 +54,18 @@ class UserProverbController extends Controller
         return view('user.proverbs.show', compact('proverb', 'categories', 'similarProverbs'));
     }
 
-    public function proverbsByCategory($id)
+    public function proverbsByCategory($categorySlug)
     {
         // Retrieve the selected category by its ID.
-        $category = Category::findOrFail($id);
+        $category = Category::where('slug', $categorySlug)->firstOrFail();
 
         $categories = Category::all();
         $proverbs = Proverb::translated();
 
         // Retrieve related proverbs for the selected category.
-        $relatedProverbs = $category->proverbs()->paginate(2);
+        $relatedProverbs = $category->proverbs()
+            ->with('translations') // Load proverb translations if needed
+            ->paginate(4);
 
         return view('user.proverbs.by_category', [
             'category' => $category,
@@ -82,9 +84,11 @@ class UserProverbController extends Controller
         $proverbs = Proverb::whereHas('proverb_translations', function ($query) use ($term) {
             $query->where('content', 'like', '%' . $term . '%');
         })
-            ->paginate();
+            ->paginate(4);
         // ->where('proverb_translations.content', 'like', '%' . $query . '%');
 
-        return view('user.proverbs.index', compact('proverbs', 'categories'));
+        $resultCount = $proverbs->total();
+
+        return view('user.proverbs.index', compact('proverbs', 'categories', 'resultCount'))->with('query', $term);
     }
 }

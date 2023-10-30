@@ -23,8 +23,8 @@ use App\Http\Controllers\User\UserProverbController;
 // });
 Route::get('/', [UserProverbController::class, 'index'])->name('user.proverb.index');
 Route::get('/proverbs/search', [UserProverbController::class, 'search'])->name('user.proverbs.index');
+Route::get('/proverbs/category/{by_category:slug}', [UserProverbController::class, 'proverbsByCategory'])->name('user.proverbs.by_category');
 Route::get('/proverbs/{id}', [UserProverbController::class, 'show'])->name('user.proverbs.show');
-Route::get('/proverbs/{by_category:slug}', [UserProverbController::class, 'proverbsByCategory'])->name('user.proverbs.by_category');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
