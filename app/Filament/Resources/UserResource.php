@@ -19,7 +19,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
@@ -73,25 +73,5 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }   
-
-    public function save()
-    {
-        // Get the current user model being edited or created
-        $user = $this->getModel();
-
-        // Check if a new password has been provided in the form
-        if ($this->form->get('password')) {
-            // Hash the password using a secure hashing algorithm (e.g., bcrypt)
-            $hashedPassword = bcrypt($this->form->get('password'));
-
-            // Set the hashed password in the user model
-            $user->password = $hashedPassword;
-        }
-
-        // Save the user model with the hashed password
-        $user->save();
-
-        // Continue with the default save process
-        parent::save();
-    }
+    
 }

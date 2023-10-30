@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Category;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
-class TagFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,12 +18,14 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
-        $title = Str::lcfirst(fake()->unique()->words(rand(1, 2), true));
+        $title = Str::ucfirst(fake()->unique()->words(rand(1, 3), true));
         $slug = Str::slug($title);
-
+        
         return [
             'title' => $title,
             'slug' => $slug,
+            'description' => fake()->sentence(),
+            'parent_id' => Category::count() ? Category::pluck('id')->random() : 0,
         ];
     }
 }

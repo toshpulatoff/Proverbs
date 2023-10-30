@@ -9,7 +9,7 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['slug', 'name'];
+    protected $fillable = ['slug', 'title', 'meta_title', 'meta_description', 'meta_keywords', 'canonical_url'];
 
     public function proverbs()
     {

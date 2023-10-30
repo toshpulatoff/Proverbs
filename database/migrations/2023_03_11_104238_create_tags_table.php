@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            //$table->string('slug')->unique();
-            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('title');
+            $table->string('meta_title', 255)->nullable();
+            $table->text('meta_description', 255)->nullable();
+            $table->text('meta_keywords', 255)->nullable();
+            $table->string('canonical_url')->nullable();
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Proverb>
@@ -16,8 +17,12 @@ class ProverbFactory extends Factory
      */
     public function definition(): array
     {
+        $user = User::inRandomOrder()->first();
+
         return [
-            'image_url' => fake()->image(),
+            'slug' => fake()->words(3, true), //problem was with seeding in proverb seeder
+            'author_id' => $user->id,
+            'status' => fake()->randomElement(['1', '0']),
         ];
     }
 }

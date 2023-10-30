@@ -25,7 +25,7 @@ class UserProverbController extends Controller
         //     ->get();
 
         $categories = Category::all();
-        $proverbs = Proverb::translated()->paginate(2);
+        $proverbs = Proverb::translated()->paginate(4);
 
         return view('user.proverbs.index', compact('proverbs', 'categories'));
     }
@@ -41,19 +41,31 @@ class UserProverbController extends Controller
         $categories = Category::all();
         $proverb = Proverb::findOrFail($id);
 
-        return view('user.proverbs.show', compact('proverb', 'categories'));
+        $proverbTags = $proverb->tags()->pluck('id')->toArray();
+
+        $similarProverbs = Proverb::whereHas('tags', function ($query) use ($proverbTags) {
+            $query->whereIn('id', $proverbTags);
+        })
+            ->where('id', '!=', $id)
+            ->inRandomOrder()
+            ->take(2)
+            ->get();
+
+        return view('user.proverbs.show', compact('proverb', 'categories', 'similarProverbs'));
     }
 
-    public function proverbsByCategory($id)
+    public function proverbsByCategory($categorySlug)
     {
         // Retrieve the selected category by its ID.
-        $category = Category::findOrFail($id);
+        $category = Category::where('slug', $categorySlug)->firstOrFail();
 
         $categories = Category::all();
         $proverbs = Proverb::translated();
 
         // Retrieve related proverbs for the selected category.
-        $relatedProverbs = $category->proverbs()->paginate(2);
+        $relatedProverbs = $category->proverbs()
+            ->with('translations') // Load proverb translations if needed
+            ->paginate(4);
 
         return view('user.proverbs.by_category', [
             'category' => $category,
@@ -65,14 +77,18 @@ class UserProverbController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $term = $request->input('query');
         $categories = Category::all();
 
         // Perform a search on the Proverb model using the 'content' attribute.
-        $proverbs = Proverb::translated()
-            ->where('content', 'like', '%' . $query . '%')
-            ->paginate(2);
+        $proverbs = Proverb::whereHas('proverb_translations', function ($query) use ($term) {
+            $query->where('content', 'like', '%' . $term . '%');
+        })
+            ->paginate(4);
+        // ->where('proverb_translations.content', 'like', '%' . $query . '%');
 
-        return view('user.proverbs.search', compact('proverbs', 'categories'));
+        $resultCount = $proverbs->total();
+
+        return view('user.proverbs.index', compact('proverbs', 'categories', 'resultCount'))->with('query', $term);
     }
 }

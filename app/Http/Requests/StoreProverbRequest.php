@@ -23,6 +23,9 @@ class StoreProverbRequest extends FormRequest
     {
         $rules = [
             'oz.content' => 'required',
+            'uz.content' => 'required',
+            'en.content' => 'required',
+            'ru.content' => 'required',
         ];
 
         foreach (config('translatable.locales') as $locale) {
